@@ -13,6 +13,47 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#centralwidget{
+ border-image:url(:/image/bg.jpg);
+
+}
+
+#widget{
+ border: 1px solid;
+background: rgba(0, 0, 0, 80);
+
+}
+
+#label,#label_2,#currentDateTime,#logo { color: white; }
+QLineEdit { border-radius: 3px; }
+
+QPushButton
+{
+  color: white;
+  background-color: #27a9e3;
+  border-width: 0px;
+  border-radius: 3px;
+}
+
+QPushButton:hover { background-color: #66c011; }
+
+#topPanel { background-color: qlineargradient(spread:reflect, x1:0.5, y1:0, x2:0, y2:0, stop:0 rgba(46, 204, 233, 100), stop:1 rgba(32, 80, 96, 5)); 
+
+
+}
+
+
+#restartButton{
+ border-radius: 15px;
+
+}
+#shutdownButton{
+ border-radius: 15px;
+
+}
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget"/>
  </widget>
  <resources/>
