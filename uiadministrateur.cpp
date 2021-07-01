@@ -10,6 +10,7 @@ UIAdministrateur::UIAdministrateur(QWidget *parent) :
     ui(new Ui::UIAdministrateur)
 {
     ui->setupUi(this);
+
 }
 UIAdministrateur::UIAdministrateur(QObject *controller)
     : ui(new Ui::UIAdministrateur)
@@ -22,6 +23,8 @@ UIAdministrateur::UIAdministrateur(QObject *controller)
     connect(ui->pushButtonEffacer, SIGNAL(clicked()), controller, SLOT(onUIAdministrateurEffacerClicked()));
     connect(ui->pushButtonSupprimer, SIGNAL(clicked()), controller, SLOT(onUIAdministrateurSupprimerClicked()));
     connect(ui->pushButtonRechercher, SIGNAL(clicked()), controller, SLOT(onUIAdministrateurRechercherClicked()));
+
+
 }
 
 UIAdministrateur::~UIAdministrateur()
@@ -29,7 +32,7 @@ UIAdministrateur::~UIAdministrateur()
     delete ui;
 }
 
-bool UIAdministrateur::getInputs(int* identifiant,QString &nom,QString &prenom, QString &login,QString &password,QString &type,bool* operation){
+bool UIAdministrateur::getInputs(int* identifiant,QString &nom,QString &prenom, QString &login,QString &password,QString &type, QString &dates_Naiss, QString &Tel, QString &Sexe, QString &Lieu_Nais,  int* CNI,bool* operation,QString &Matricule){
 
     if(ui->lineEditId->text().compare("") !=0){
         *identifiant = ui->lineEditId->text().toInt();
@@ -37,9 +40,24 @@ bool UIAdministrateur::getInputs(int* identifiant,QString &nom,QString &prenom, 
     }
 
     login = ui->lineEditLogin->text();
+
     nom = ui->lineEditUsername->text();
+
     prenom = ui->lineEditprenome->text();
+
     password = ui->lineEditPassword->text();
+
+    *CNI =  ui->lineEdit_CNI->text().toInt();
+
+    Tel =  ui->lineEdit_Tel->text();
+
+    Sexe=  ui->comboBoxRole_Sexe->currentText();
+
+    Lieu_Nais =  ui->lineEdit_lieu->text();
+
+    dates_Naiss = ui->dateEdit_Naiss->text()  ;
+
+    Matricule = ui->lineEdit_Matricule->text();
 
     type = ui->comboBoxRole->currentText();
     *operation = ui->radioButtonCreer->isChecked();//true si creation
@@ -50,9 +68,9 @@ bool UIAdministrateur::getInputs(int* identifiant,QString &nom,QString &prenom, 
     }
 
 
-    if(login.compare("") == 0 ||  nom.compare("") ==0){
+    if(login.compare("") == 0 ||  nom.compare("") ==0 || Matricule.compare("") ==0){
 
-        QMessageBox::critical(this,"information","Saisissez votre nom et login",QMessageBox::Ok);
+        QMessageBox::critical(this,"information","Saisissez votre nom et login, Matricule",QMessageBox::Ok);
         return false;
     }
     return true;
@@ -66,13 +84,29 @@ bool UIAdministrateur::getId(int *identifiant, QString &login){
      return true;
 }
 
+bool UIAdministrateur::getRech(QString &rech){
+
+    rech = ui->lineEditRechercher->text();
+    if(rech.compare("") == 0){
+
+
+    QMessageBox::critical(this,"information","Input rechercher est vide !",QMessageBox::Ok);
+    return false;
+    }
+
+     return true;
+}
+
 
 void UIAdministrateur::getTable(QSqlQueryModel* model ){
     ui->tableView->setModel(model);
 }
+void UIAdministrateur::getTableRech(QSqlQueryModel *model){
+    ui->tableView->setModel(model);
+}
 
 
-void UIAdministrateur::viderInputs(){
+void UIAdministrateur::effacerInputs(){
 
     ui->lineEditId->clear();
     ui->lineEditUsername->clear();
@@ -80,6 +114,10 @@ void UIAdministrateur::viderInputs(){
     ui->lineEditLogin->clear();
     ui->lineEditConfirmPassword->clear();
     ui->lineEditPassword->clear();
+    ui->lineEdit_Tel->clear();
+    ui->lineEdit_lieu->clear();
+    ui->lineEdit_CNI->clear();
+    ui->lineEdit_Matricule->clear();
 
 
 }
@@ -102,7 +140,8 @@ void UIAdministrateur::on_tableView_activated(const QModelIndex &index)
       qDebug() << "DBAccess Object created and 'gestion_notes.db' has been added as default database!";
       QSqlQuery query;
 
-      query.exec( "SELECT identifiant, nom, prenom, login, type FROM t_users WHERE identifiant='"+val+"' or nom='"+val+"' or prenom='"+val+"' or login='"+val+"' or type='"+val+"' ");
+      query.exec( "SELECT identifiant, nom, prenom, login, type, date_Naiss, Tel, Sexe, Lieu_Naiss, Numero_CNI FROM t_users WHERE identifiant='"+val+"' or nom='"+val+"' or prenom='"+val+"' or login='"+val+"' or type='"+val+"'"
+"or date_Naiss='"+val+"' or Tel='"+val+"' or Sexe='"+val+"' or Lieu_Naiss='"+val+"' or Numero_CNI='"+val+"' ");
 
       while(query.next()){
              ui->lineEditId->setText(query.value(0).toString());
@@ -110,6 +149,11 @@ void UIAdministrateur::on_tableView_activated(const QModelIndex &index)
              ui->lineEditprenome->setText(query.value(2).toString());
              ui->lineEditLogin->setText(query.value(3).toString());
              ui->comboBoxRole->setCurrentText(query.value(4).toString());
+             // ui->dateEdit_Naiss->setText(query.value(5).toString());
+             ui->lineEdit_Tel->setText(query.value(6).toString());
+             ui->comboBoxRole_Sexe->setCurrentText(query.value(7).toString());
+             ui->lineEdit_lieu->setText(query.value(8).toString());
+             ui->lineEdit_CNI->setText(query.value(9).toString());
          }
 }
 
@@ -118,28 +162,4 @@ void  UIAdministrateur::notificationInfo(QString message){
 
     QMessageBox::information(this,"information",message);
 }
-
-
-void UIAdministrateur::findText(const QString & text, int from){
-       if(text.isEmpty())
-           return;
-
-       QModelIndexList indexes = ui->tableView->model()->match(ui->tableView->model()->index(0,0),
-                                              Qt::EditRole,
-                                              text,
-                                              -1
-                                             );
-       if(indexes.length() > from){
-           QModelIndex ix = indexes.at(from);
-           ui->tableView->setCurrentIndex(ix);
-           ui->tableView->scrollTo(ix);
-       }
-   }
-
-
-
-void  UIAdministrateur::onClicked(){
-    findText(ui->lineEditRechercher->text(), ++index);
-}
-
 

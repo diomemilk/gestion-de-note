@@ -25,6 +25,13 @@ public:
     bool readBy(QString login, QString password, User *user);
 
     QSqlQueryModel* readAll();
+    QSqlQueryModel* readAll(QString rech);
+    QSqlQueryModel* readAll(uint Id);
+    QSqlQueryModel* readAllEtudiant();
+    QSqlQueryModel* readAllFormateur();
+
+    void updateProfile(User user);
+    void ModifierPassword(User user);
 
 
 };

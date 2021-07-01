@@ -8,6 +8,7 @@
 #include "profile.h"
 #include "uiresponsable.h"
 #include "uifarmateur.h"
+#include "mainformateur.h"
 
 
 class FlowController : public QObject
@@ -21,6 +22,8 @@ private:
     profile* prof;
     UIResponsable* uiresponsable;
     UIFarmateur* uifarmateur;
+    MainFormateur* mainFormateur;
+    User us;
 
 
    //couche service
@@ -50,7 +53,37 @@ private slots:
     void onUIAdministrateurExitClicked();
     void onUIAdministrateurRechercherClicked();
     void onUIAdministrateurProfilClicked();
+    void onUIAdministrateurRetourClicked();
 
+    /**
+    * @brief onUIResponsable buttons clicked
+    */
+
+    void onUIResponsableValiderClicked();
+    void onUIResponsableListerEtudiantClicked();
+    void onUIResponsableListerFormateurClicked();
+    void onUIResponsableListerMatiereClicked();
+    void onUIResponsableEffacerClicked();
+    void onUIResponsableSupprimerClicked();
+    void onUIResponsableExitClicked();
+    void onUIResponsableRechercherClicked();
+    void onUIResponsableProfilClicked();
+
+
+    void onUIResponsableEnregisterClasseClicked();
+    void onUIResponsableEnregisterModuleClicked();
+    void onUIResponsableGererFormateurClicked();
+
+
+    void onFormatuerEnregisterClicked();
+    void onFormatuerListerGFClicked();
+    void onFormatuerExitClicked();
+    void onFormatuerRetourClicked();
+    void onFormatuerSupprimerClicked();
+
+    //profile
+    void ModifierProfileClicked();
+    void ModifierPasswordClicked();
 
 public:
     void exec();

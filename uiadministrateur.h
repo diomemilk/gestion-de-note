@@ -18,14 +18,15 @@ public:
     UIAdministrateur(QWidget *parent = nullptr);
     UIAdministrateur(QObject *controller = nullptr);
     ~UIAdministrateur();
-    bool getInputs(int* identifiant,QString &nom,QString &prenom, QString &login,QString &password,QString &type,bool* operation);
+    bool getInputs(int* identifiant,QString &nom,QString &prenom, QString &login,QString &password,QString &type,  QString &dates_Naiss, QString &Tel, QString &Sexe, QString &Lieu_Nais, int* CNI, bool* operation,QString &Matricule);
     bool getId(int* identifiant,QString &login);
+    bool getRech(QString &rech);
     void setNam(QString login);
     void getTable(QSqlQueryModel* model );
-    void viderInputs();
+    void getTableRech(QSqlQueryModel* model );
+    void effacerInputs();
     void notificationInfo(QString message);
-    void findText(const QString & text, int from);
-    void onClicked();
+
 
 private slots:
     void on_tableView_activated(const QModelIndex &index);

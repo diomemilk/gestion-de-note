@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="src.qrc">
-    <normaloff>:/image/secrecy-icon.png</normaloff>:/image/secrecy-icon.png</iconset>
+    <normaloff>:/image/responsable.png</normaloff>:/image/responsable.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralwidget{

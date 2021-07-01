@@ -10,5 +10,7 @@
         <file>Flat_restart_icon.svg.png</file>
         <file>u.jpg</file>
         <file>ur.png</file>
+        <file>responsable.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>
